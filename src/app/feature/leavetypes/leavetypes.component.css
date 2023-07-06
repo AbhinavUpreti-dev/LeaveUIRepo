@@ -1,0 +1,11 @@
+.table-row:focus {
+    background: tomato;
+    outline: none;
+  }
+  .table-row:focus mat-cell {
+    color: white; 
+  }
+
+  .btn-max-height{
+    max-height: 50px;
+  }
