@@ -33,11 +33,10 @@ export class LeaveEditComponent implements OnInit{
       debugger;
       if(this.data)
       { 
-        this.Id =  this.data["element"].Id;
-        this.startDate= this.data['element'].startdate;
-        this.endDate =this.data['element'].enddate;
-        this.leaveType =this.data['element'].leavetype;
-        this.remaingDays = this.data['element'].remainingDays;
+        this.Id =  this.data["element"].employeeId;
+        this.startDate= this.data['element'].startDate;
+        this.endDate =this.data['element'].endDate;
+        this.leaveType =this.data['element'].leaveType;
         this.status = this.data['element'].status;
       }
     }
@@ -47,11 +46,10 @@ export class LeaveEditComponent implements OnInit{
     debugger;
    this.matdialog.closeAll();
    this.newLeave = {} as LeaveTypeInterface;
-   this.newLeave.leavetype = this.leaveType;
-   this.newLeave.startdate = this.startDate;
-   this.newLeave.enddate = this.endDate;
-   this.newLeave.remainingDays = this.remaingDays
-   this.newLeave.Id = this.Id;
+   this.newLeave.leaveType = this.leaveType;
+   this.newLeave.startDate = this.startDate;
+   this.newLeave.endDate = this.endDate;
+   this.newLeave.employeeId = this.Id;
    this.modalPopUpServiceService.updateCurrentLeaves(this.newLeave);
   }
 

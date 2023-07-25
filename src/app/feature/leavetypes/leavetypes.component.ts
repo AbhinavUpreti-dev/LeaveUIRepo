@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { LeaveTypeInterface } from '../Interfaces/LeaveTypeInterface';
 import {ModalPopUpServiceService} from '../../shared/modal-pop-up-service.service';
 import {BehaviorSubject, Observable, map} from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { LeaveEditComponent } from '../leave-edit/leave-edit.component';
+import { ActivatedRoute } from '@angular/router';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-leavetypes',
   templateUrl: './leavetypes.component.html',
@@ -14,17 +16,30 @@ import { LeaveEditComponent } from '../leave-edit/leave-edit.component';
 
 
 export class LeavetypesComponent implements OnInit {
-  displayedColumns: string[] = ['id','leaveType', 'startdate', 'enddate','editleaves','deleteleaves','status'];
+  @ViewChild('paginator', { static: true }) paginator: MatPaginator;
+  displayedColumns: string[] = ['id','leaveType', 'startdate', 'enddate','editleaves','deleteleaves','status'];//... set columns here
+  totalRecords = 0;
+  pageSize = 10;
+  pageIndex = 0;
+  
+ 
   //dataSource : LeaveTypeInterface[] = [];
-  dataSource$: BehaviorSubject<LeaveTypeInterface[]>;
+ leaveDataSource:LeaveTypeInterface[];
   public dataSource = new MatTableDataSource<LeaveTypeInterface>();
-  constructor(private modelPopUpService : ModalPopUpServiceService, public dialog: MatDialog,private changeDetectorRefs: ChangeDetectorRef){
-
+  constructor(private modelPopUpService : ModalPopUpServiceService, public dialog: MatDialog,private changeDetectorRefs: ChangeDetectorRef,private _route: ActivatedRoute ){
+    this.leaveDataSource = [];
   }
   ngOnInit(){
-   this.dataSource$ = this.modelPopUpService.getLeaveDetails(); 
-   this.refresh();
+    debugger;
+   this.leaveDataSource = this._route.snapshot.data["leaveData"]; 
   }
+
+  pageChangeEvent(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+}
+
+
   openDialog() {
     this.dialog.open(LeaveEditComponent).afterClosed().subscribe(result => {
       this.refresh();
@@ -48,7 +63,9 @@ export class LeavetypesComponent implements OnInit {
 });
   }
   refresh() {
+    debugger;
     this.modelPopUpService.getLeaveDetails().subscribe((res) => {
+      console.log(res);
       this.dataSource.data = res;
       this.changeDetectorRefs.detectChanges();
     });

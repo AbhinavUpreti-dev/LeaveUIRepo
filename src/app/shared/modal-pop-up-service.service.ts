@@ -1,43 +1,54 @@
 import { Injectable } from '@angular/core';
 import { LeaveTypeInterface } from '../feature/Interfaces/LeaveTypeInterface';
 import {BehaviorSubject, Observable,map,of, tap} from 'rxjs';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class ModalPopUpServiceService {
 
-  leaveTypes : LeaveTypeInterface[] = [
-    {Id:1,leavetype: "Sick Leave", startdate: new Date("05-07-2023"),enddate: new Date("05-07-2023"),remainingDays:8,status:"Pending Approval"},
-    {Id:2,leavetype: "Casual Leave", startdate: new Date("05-07-2023"),enddate:new Date("05-07-2023"),remainingDays:8,status:"Approved"},
-  ];
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+       'Authorization' : `Bearer ${JSON.parse(localStorage.getItem('token')).token}`
+    })
+  };
+  constructor(private http: HttpClient) { }
+  leaveTypes : LeaveTypeInterface[] = [];
 
   leaveTypeObservable$ =  new BehaviorSubject(this.leaveTypes);
-  constructor() { }
 
   updateCurrentLeaves(leaveType : LeaveTypeInterface)
   {
-    if(leaveType.Id)
+    if(leaveType.employeeId)
     {
-      const existingLeaveType = this.leaveTypes.find(x => x.Id===leaveType.Id) ;
-      existingLeaveType.startdate =leaveType.startdate;
-      existingLeaveType.enddate = leaveType.enddate;
-      existingLeaveType.leavetype = leaveType.leavetype;
-      existingLeaveType.remainingDays = leaveType.remainingDays;
+      const existingLeaveType = this.leaveTypes.find(x => x.employeeId===leaveType.employeeId) ;
+      existingLeaveType.startDate =leaveType.startDate;
+      existingLeaveType.endDate = leaveType.endDate;
+      existingLeaveType.leaveType = leaveType.leaveType;
       existingLeaveType.status = leaveType.status;
       this.leaveTypeObservable$.next(this.leaveTypes);
     }
     else{
-      leaveType.Id = this.leaveTypes.length+1;
+      debugger;
+      leaveType.employeeId = 103;
       leaveType.status = "Pending Approval";
-      this.leaveTypes.push(leaveType);
-      this.leaveTypeObservable$.next(this.leaveTypes);
+      const url =  "https://localhost:7276/api/v1/LeaveDetails"
+      this.http.post(url,leaveType,this.httpOptions).subscribe({
+          next: data => {
+           
+          },
+          error: error => {             
+              console.error('There was an error!', error);
+          }
+      });
     }
    
   }
- getLeaveDetails() : BehaviorSubject<LeaveTypeInterface[]>
+ getLeaveDetails() : Observable<LeaveTypeInterface[]>
  {
-   return this.leaveTypeObservable$;
+  let url = "https://localhost:7276/api/v1/LeaveDetails";
+  return this.http.get<LeaveTypeInterface[]>(url,this.httpOptions);
  }
 
  removeExisitingElement(leaveType:LeaveTypeInterface) : void 
@@ -48,7 +59,7 @@ if (index > -1) {
 }
 
 for (let index = 0; index < this.leaveTypes.length; index++) {
-  this.leaveTypes[index].Id = index+1;
+  this.leaveTypes[index].employeeId = index+1;
   
 }
 this.leaveTypeObservable$.next(this.leaveTypes);

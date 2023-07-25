@@ -2,12 +2,19 @@
     
     
          <mat-toolbar color="primary">
+          <div class="container-fluid">
            <div class="row"> 
              <div class="col-md-10">
                 <span>Leave Management</span>
              </div>
-           
+           <div class="col-md-2">
+            <button *ngIf="IsLoggedIn$|async" type="button" class="btn btn-primary logOut" (click)="submit()" matTooltip="Tooltip Display" 
+            aria-label="Displays a tooltip">Log Out
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </button>
            </div>
+           </div>
+          </div>
          </mat-toolbar>
     <!-- <div class="input-group">
       <div class="form-outline">

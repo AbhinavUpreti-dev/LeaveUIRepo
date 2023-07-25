@@ -1,8 +1,7 @@
 export interface LeaveTypeInterface {
-    leavetype: string;
-    startdate: Date;
-    enddate: Date;
+    leaveType: string;
+    startDate: Date;
+    endDate: Date;
     status: string;
-    remainingDays: number;
-    Id: number;
+    employeeId: number;
   }
