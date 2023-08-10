@@ -4,6 +4,7 @@ import { LeaveTypes } from '../Interfaces/LeaveType';
 import {LeaveTypeInterface} from '../Interfaces/LeaveTypeInterface'
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {ModalPopUpServiceService} from '../../shared/modal-pop-up-service.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-leave-edit',
   templateUrl: './leave-edit.component.html',
@@ -25,7 +26,7 @@ export class LeaveEditComponent implements OnInit{
   
   constructor(private modalPopUpServiceService : ModalPopUpServiceService, 
     private matdialog : MatDialog,private changeDetectorRefs: ChangeDetectorRef,
-    @Inject(MAT_DIALOG_DATA) public data: LeaveTypeInterface) {}
+    @Inject(MAT_DIALOG_DATA) public data: LeaveTypeInterface, private toasterService : ToastrService) {}
 
 
     ngOnInit()
@@ -44,13 +45,14 @@ export class LeaveEditComponent implements OnInit{
 
   onSubmit():void{
     debugger;
-   this.matdialog.closeAll();
    this.newLeave = {} as LeaveTypeInterface;
    this.newLeave.leaveType = this.leaveType;
    this.newLeave.startDate = this.startDate;
    this.newLeave.endDate = this.endDate;
    this.newLeave.employeeId = this.Id;
-   this.modalPopUpServiceService.updateCurrentLeaves(this.newLeave);
+   this.modalPopUpServiceService.createNewLeave(this.newLeave).subscribe(data=>{
+    this.toasterService.show("Employee Creation",data);
+   });
   }
 
   openDialog() {

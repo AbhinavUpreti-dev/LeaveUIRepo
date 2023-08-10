@@ -26,3 +26,13 @@
     display: flex;
     justify-content: flex-end;
   }
+
+
+  .card-body-height{
+    height:340px;
+    width:500px;
+  }
+
+  .mb-left{
+    margin-left: 1rem!important;
+  }

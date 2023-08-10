@@ -1,22 +1,26 @@
 <form>
     <div class="card">
         <div class="card-header">
-          Employee Login
+          Register New Employee
         </div>
         <div class="card-body card-body-height">
+
             <div class="form-outline mb-4">
-                <input type="email" id="form2Example1" class="form-control" [(ngModel)]="email" name="email"/>
+                <input type="email" id="form2Example1" class="form-control" autocomplete="false" [(ngModel)]="email" name="registeredemail"/>
+                <label class="form-label" for="form2Example1">UserName</label>
+              </div>
+
+            <div class="form-outline mb-4">
+                <input type="email" id="form2Example1" class="form-control" autocomplete="false" [(ngModel)]="userName" name="registereduserName"/>
                 <label class="form-label" for="form2Example1">Email address</label>
               </div>
             
               <!-- Password input -->
               <div class="form-outline mb-4">
-                <input type="password" id="form2Example2" class="form-control" [(ngModel)]="password" name="password"/>
+                <input type="password" id="form2Example2" class="form-control" autocomplete="false" [(ngModel)]="password" name="registeredpassword"/>
                 <label class="form-label" for="form2Example2">Password</label>
               </div>
-              <div *ngIf="errors">
-                  Invalid Credentials
-                </div>
+             
               <!-- 2 column grid layout for inline styling -->
               <div class="row mb-4">
                 <div class="col d-flex justify-content-left">
@@ -29,8 +33,16 @@
               </div>
             
               <!-- Submit button -->
-              <button type="button" class="btn btn-primary btn-block mb-4" (click)="submit()">Sign in</button>
-              <button type="button" class="btn btn-primary btn-block mb-4 mb-left" (click)="register()">Register New User</button>
+             
+              <button type="button" class="btn btn-primary btn-block mb-4 mb-left" (click)="submit()">Create User</button>
+             
+              <div *ngIf="errors">
+                <ng-template>
+                    <div *ngFor="let item of errors">
+                       <p>{{errors}}</p>
+                    </div>
+                </ng-template>
+              </div>
               <mat-spinner *ngIf="IsLoaded"></mat-spinner>
         </div>
       </div>

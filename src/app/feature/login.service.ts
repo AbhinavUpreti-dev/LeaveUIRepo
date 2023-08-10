@@ -16,18 +16,34 @@ export class LoginService {
   public IsLoggedIn = new Subject<boolean>();
   login(user : User) : Observable<string>
   {
-  return this.httpClient.post<string>('https://localhost:7276/api/Auth', 
-  { email:user.UserName,password:user.Password })
-  .pipe(map(_=>{
-     this.IsLoggedIn.next(true);
-     return _;
-  }),
-  catchError((e: any) =>{
-    //do your processing here
-    this.IsLoggedIn.next(false);
-     return throwError(() => new Error(e));
-  })
-);
+      return this.httpClient.post<string>('https://localhost:7276/api/Auth/login', 
+      { userName:user.UserName,password:user.Password })
+      .pipe(map(_=>{
+        this.IsLoggedIn.next(true);
+        return _;
+      }),
+      catchError((e: any) =>{
+        //do your processing here
+        this.IsLoggedIn.next(false);
+        return throwError(() => new Error(e));
+      })
+    );
+  }
+
+  register(user:User) : Observable<string>
+  {
+    return this.httpClient.post<string>('https://localhost:7276/api/Auth/register', 
+    {email:user.UserName, userName:user.UserName,password:user.Password })
+    .pipe(map(_=>{
+      this.IsLoggedIn.next(true);
+      return _;
+    }),
+    catchError((e: any) =>{
+      //do your processing here
+      this.IsLoggedIn.next(false);
+      return throwError(() => new Error(e));
+    })
+  );
   }
 
   public isAuthenticated(): Observable<boolean> {

@@ -17,9 +17,9 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 export class LeavetypesComponent implements OnInit {
   @ViewChild('paginator', { static: true }) paginator: MatPaginator;
-  displayedColumns: string[] = ['id','leaveType', 'startdate', 'enddate','editleaves','deleteleaves','status'];//... set columns here
+  displayedColumns: string[] = ['leaveType', 'startdate', 'enddate','editleaves','deleteleaves','status'];//... set columns here
   totalRecords = 0;
-  pageSize = 10;
+  pageSize = 5;
   pageIndex = 0;
   
  
@@ -37,6 +37,7 @@ export class LeavetypesComponent implements OnInit {
   pageChangeEvent(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
+    this.refresh(this.pageSize);
 }
 
 
@@ -62,11 +63,11 @@ export class LeavetypesComponent implements OnInit {
   this.refresh();
 });
   }
-  refresh() {
+  refresh(pageSize=0) {
     debugger;
-    this.modelPopUpService.getLeaveDetails().subscribe((res) => {
+    this.modelPopUpService.getLeaveDetails(pageSize).subscribe((res) => {
       console.log(res);
-      this.dataSource.data = res;
+      this.leaveDataSource = res;
       this.changeDetectorRefs.detectChanges();
     });
   }

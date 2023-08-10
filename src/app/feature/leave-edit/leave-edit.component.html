@@ -20,7 +20,7 @@
                 <h4>Leave Details</h4>
                 <mat-form-field>
                   <mat-label>Leave Type</mat-label>
-                  <mat-select (selectionChange)="changeClient($event.value)" [(ngModel)] = "leaveType">
+                  <mat-select (selectionChange)="changeClient($event.value)" [(ngModel)] = "leaveType" name="leaveType">
                     <mat-option *ngFor="let leave of leaveTypes" [value]="leave.Name">
                       {{leave.Name}}
                     </mat-option>

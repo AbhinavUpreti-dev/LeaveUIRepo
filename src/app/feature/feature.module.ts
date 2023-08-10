@@ -19,11 +19,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { RegisterUserComponent } from './register-user/register-user.component';
 @NgModule({
   declarations: [
     LeavetypesComponent,
     LeaveEditComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterUserComponent
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatPaginatorModule
 
   ],
-  exports:[LeavetypesComponent,LeaveEditComponent,LoginComponent]
+  exports:[LeavetypesComponent,LeaveEditComponent,LoginComponent,RegisterUserComponent]
 })
 export class FeatureModule { }
